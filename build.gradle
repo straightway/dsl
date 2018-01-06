@@ -26,6 +26,14 @@ dependencies {
     testCompile "org.junit.jupiter:junit-jupiter-api:5.0.0-M4"
 }
 
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: "file://" + file("../repo"))
+        }
+    }
+}
+
 compileKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
