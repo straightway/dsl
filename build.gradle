@@ -14,8 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *  ***************************************************************************
- *
  */
+
 buildscript {
     ext.kotlin_version = '1.2.20'
 
@@ -41,7 +41,7 @@ repositories {
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    compile "straightway:error:0.1+"
+    compile findProject(":error") ?: "straightway:error:0.1+"
     testCompile "org.junit.jupiter:junit-jupiter-api:5.0.0-M4"
 }
 
