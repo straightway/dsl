@@ -1,24 +1,25 @@
-/****************************************************************************
-Copyright 2016 github.com/straightway
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
- ****************************************************************************/
+/*
+ * Copyright 2016 github.com/straightway
+ *
+ *  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 package straightway.dsl
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import straightway.error.Panic
 
 class BoundExprTest {
 
@@ -30,21 +31,26 @@ class BoundExprTest {
         = assertEquals(2, (BoundExpr(exprArity2, exprArity1)).arity)
     @Test fun bindingBinaryExpression_incrementsArity()
         = assertEquals(3, (BoundExpr(exprArity2, otherExprArity2)).arity)
-    @Test fun bindingToValue_throws()
-    { assertThrows<AssertionError>(AssertionError::class.java) { BoundExpr(Value(2), otherExprArity2) } }
 
-    @Test fun invoke_withTooFewParametersThrows() {
-        val binding = fun1 { -it }
-        val bound = fun1 { -it }
-        val sut = BoundExpr(binding, bound)
-        assertThrows<AssertionError>(AssertionError::class.java) { sut() }
+    @Test
+    fun `binding to value panics`() {
+        assertThrows<Panic>(Panic::class.java) { BoundExpr(Value(2), otherExprArity2) }
     }
 
-    @Test fun invoke_withTooManyParametersThrows() {
+    @Test
+    fun `invoke wit too few parameters panics`() {
         val binding = fun1 { -it }
         val bound = fun1 { -it }
         val sut = BoundExpr(binding, bound)
-        assertThrows<AssertionError>(AssertionError::class.java) { sut(1, 2) }
+        assertThrows<Panic>(Panic::class.java) { sut() }
+    }
+
+    @Test
+    fun `invoke with too many parameters panics`() {
+        val binding = fun1 { -it }
+        val bound = fun1 { -it }
+        val sut = BoundExpr(binding, bound)
+        assertThrows<Panic>(Panic::class.java) { sut(1, 2) }
     }
 
     @Test fun invoke_forBoundValue_yieldsCallResultOfHigherArityExpression() {

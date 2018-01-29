@@ -15,22 +15,24 @@
  */
 package straightway.dsl
 
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
-class CombinableExprTest {
+class UtilitiesTestUntypedOpWithSingleParameter {
 
-    @Test fun combinedExpressionKeepsState() {
-        val result = TestExpr - TestExpr.inState<Int>()
+    @Test fun returnsLambdaWithAnyParametersAndReturnType() {
+        val result = untypedOp<Int> { a -> a * 3}
         @Suppress("USELESS_IS_CHECK")
-        assertTrue(result is StateExpr<Int>)
+        Assertions.assertTrue(result is (Any) -> Any)
     }
 
-    @Test fun combineStatelessExpressions() {
-        val result = TestExpr - TestExpr
-        assertEquals(1, result(1))
+    @Test fun callsPassedLambda() {
+        var calls = 0
+        val result = untypedOp<Int> { a -> calls++; -a }
+        assertEquals(0, calls)
+        val callResult = result(5)
+        assertEquals(1, calls)
+        assertEquals(-5, callResult)
     }
-
-    private object TestExpr : CombinableExpr, Expr by FunExpr("neg", untyped<Int, Int> { -it })
 }
