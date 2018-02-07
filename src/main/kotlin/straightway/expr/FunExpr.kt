@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package straightway.dsl
+package straightway.expr
 
 import straightway.error.Panic
 

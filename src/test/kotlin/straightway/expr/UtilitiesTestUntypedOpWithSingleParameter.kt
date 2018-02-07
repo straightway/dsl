@@ -13,27 +13,26 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package straightway.dsl
-
+package straightway.expr
 
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-class UtilitiesTestUntypedOpWithTwoParameters {
+class UtilitiesTestUntypedOpWithSingleParameter {
 
-    @Test
-    fun returnsLambdaWithAnyParametersAndReturnType() {
-        val result = untypedOp({ i: Int, d: Int -> i * d })
+    @Test fun returnsLambdaWithAnyParametersAndReturnType() {
+        val result = untypedOp<Int> { a -> a * 3}
         @Suppress("USELESS_IS_CHECK")
-        Assertions.assertTrue(result is (Any, Any) -> Any)
+        Assertions.assertTrue(result is (Any) -> Any)
     }
 
-    @Test
-    fun returnedLambdaExecutesTypedParameterLambda() {
-        val input1: Any = 3
-        val input2: Any = 5
-        val result = untypedOp<Int>({ a, b -> a - b })
-        val output = result(input1, input2)
-        Assertions.assertEquals(-2, output)
+    @Test fun callsPassedLambda() {
+        var calls = 0
+        val result = untypedOp<Int> { a -> calls++; -a }
+        assertEquals(0, calls)
+        val callResult = result(5)
+        assertEquals(1, calls)
+        assertEquals(-5, callResult)
     }
 }

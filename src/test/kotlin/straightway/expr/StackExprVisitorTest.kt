@@ -13,26 +13,24 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package straightway.dsl
+package straightway.expr
 
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-class UtilitiesTestUntypedOpWithSingleParameter {
+class StackExprVisitorTest {
 
-    @Test fun returnsLambdaWithAnyParametersAndReturnType() {
-        val result = untypedOp<Int> { a -> a * 3}
-        @Suppress("USELESS_IS_CHECK")
-        Assertions.assertTrue(result is (Any) -> Any)
+    @Test
+    fun initiallyEmpty() {
+        val sut = StackExprVisitor()
+        assertEquals(0, sut.stack.size)
     }
 
-    @Test fun callsPassedLambda() {
-        var calls = 0
-        val result = untypedOp<Int> { a -> calls++; -a }
-        assertEquals(0, calls)
-        val callResult = result(5)
-        assertEquals(1, calls)
-        assertEquals(-5, callResult)
+    @Test
+    fun visitedExpression_pushedToStack() {
+        val sut = StackExprVisitor()
+        val visitedExpressions = listOf(Value(83), FunExpr<Int>("op") {-it })
+        for (e in visitedExpressions) sut.visit(e)
+        assertEquals(visitedExpressions, sut.stack)
     }
 }

@@ -13,24 +13,14 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package straightway.dsl
+package straightway.expr
 
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
-import org.junit.jupiter.api.Test
-
-class CombinableExprTest {
-
-    @Test fun combinedExpressionKeepsState() {
-        val result = TestExpr - TestExpr.inState<Int>()
-        @Suppress("USELESS_IS_CHECK")
-        assertTrue(result is StateExpr<Int>)
-    }
-
-    @Test fun combineStatelessExpressions() {
-        val result = TestExpr - TestExpr
-        assertEquals(1, result(1))
-    }
-
-    private object TestExpr : CombinableExpr, Expr by FunExpr("neg", untyped<Int, Int> { -it })
+/**
+ * An expression having a defined number of arguments. It can be invoked using
+ * the proper number of arguments, and traversed by a visitor in depth-first manner.
+ */
+interface Expr {
+    val arity: Int
+    fun accept(visitor: (Expr) -> Unit) { visitor(this) }
+    operator fun invoke(vararg params: Any): Any
 }

@@ -13,24 +13,26 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package straightway.dsl
+package straightway.expr
 
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
-import org.junit.jupiter.api.Test
+import straightway.error.Panic
 
-class UtilitiesTestUntypedWithSingleParameter {
+/**
+ * A terminal baseValue expression.
+ */
+open class Value(private val value: Any) : Expr {
+    override val arity = 0
 
-    @Test fun returnsLambdaWithAnyParametersAndReturnType() {
-        val result = untyped({ i: Int -> i * 3})
-        @Suppress("USELESS_IS_CHECK")
-        assertTrue(result is (Any) -> Any)
-    }
+    override fun invoke(vararg params: Any) =
+            if (params.any())
+                throw Panic("Value cannot take parameters on invocation, got: ${params.joinToString()}")
+            else
+                value
 
-    @Test fun returnedLambdaExecutesTypedParameterLambda() {
-        val input: Any = 3
-        val result = untyped({ i: Int -> i * 3})
-        val output = result(input)
-        assertEquals(9, output)
+    override fun toString() = when (value) {
+        is Array<*> -> value.asList().toString()
+        is String -> value
+        is Sequence<*> -> value.toList().toString()
+        else -> value.toString()
     }
 }

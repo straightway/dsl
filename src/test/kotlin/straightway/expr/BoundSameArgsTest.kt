@@ -13,26 +13,5 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package straightway.dsl
+package straightway.expr
 
-import straightway.error.Panic
-
-/**
- * A terminal baseValue expression.
- */
-open class Value(private val value: Any) : Expr {
-    override val arity = 0
-
-    override fun invoke(vararg params: Any) =
-            if (params.any())
-                throw Panic("Value cannot take parameters on invocation, got: ${params.joinToString()}")
-            else
-                value
-
-    override fun toString() = when (value) {
-        is Array<*> -> value.asList().toString()
-        is String -> value
-        is Sequence<*> -> value.toList().toString()
-        else -> value.toString()
-    }
-}

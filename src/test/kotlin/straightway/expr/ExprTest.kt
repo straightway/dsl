@@ -13,17 +13,26 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package straightway.dsl
+package straightway.expr
 
-/**
- * An expression associated with a type used as a state. The type itself is not
- * instantiated, it is used to be able to control binding of functions at compile t.
- */
-@Suppress("unused")
-interface StateExpr<TState> : Expr
+import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Test
 
-fun <T> Expr.inState(): StateExpr<T> = StateExprImpl(this)
+class ExprTest {
 
-private class StateExprImpl<TState>(private val wrapped: Expr) : StateExpr<TState>, Expr by wrapped {
-    override fun toString() = wrapped.toString()
+    private class TestExpr(override val arity: Int) : Expr {
+        override fun invoke(vararg params: Any) = fail<Unit>("Not implemented")!!
+    }
+
+    @Test
+    fun accept_defaultImplementation_visitsExpression() {
+        val sut = TestExpr(0)
+        var calls = 0
+        sut.accept {
+            assertTrue(it === sut)
+            calls++
+        }
+
+        assertEquals(1, calls, "Unexpected number of calls")
+    }
 }
