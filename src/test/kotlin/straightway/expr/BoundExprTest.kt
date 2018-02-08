@@ -25,12 +25,17 @@ class BoundExprTest {
 
     @BeforeEach fun setup() { calls = 0 }
 
-    @Test fun bindingValue_reducesArityByOne()
-        = assertEquals(1, (BoundExpr(exprArity2, Value(2))).arity)
-    @Test fun bindingUnaryExpression_preservesArity()
-        = assertEquals(2, (BoundExpr(exprArity2, exprArity1)).arity)
-    @Test fun bindingBinaryExpression_incrementsArity()
-        = assertEquals(3, (BoundExpr(exprArity2, otherExprArity2)).arity)
+    @Test
+    fun bindingValue_reducesArityByOne() =
+            assertEquals(1, (BoundExpr(exprArity2, Value(2))).arity)
+
+    @Test
+    fun bindingUnaryExpression_preservesArity() =
+            assertEquals(2, (BoundExpr(exprArity2, exprArity1)).arity)
+
+    @Test
+    fun bindingBinaryExpression_incrementsArity() =
+            assertEquals(3, (BoundExpr(exprArity2, otherExprArity2)).arity)
 
     @Test
     fun `binding to value panics`() {
@@ -118,13 +123,15 @@ class BoundExprTest {
         assertEquals(listOf(top, sub1, sub1sub1, sub1sub2, sub2, sub2sub1, sub2sub2), visitor.stack)
     }
 
-    @Test fun toString_yieldsExpectedResult()
-        = assertEquals("fun2-fun1-3-2", (BoundExpr(BoundExpr(BoundExpr(exprArity2, exprArity1), Value(3)), Value(2))).toString())
+    @Test
+    fun toString_yieldsExpectedResult() =
+            assertEquals("fun2-fun1-3-2", (BoundExpr(BoundExpr(BoundExpr(exprArity2, exprArity1), Value(3)), Value(2))).toString())
 
-    private fun fun1(name: String = "fun1", compute: (Int) -> Int = { it })
-        = FunExpr<Int>(name) { calls++; compute(it) }
-    private fun fun2(name: String = "fun2", compute: (Int, Int) -> Int = { a, b -> a - b })
-        = FunExpr<Int, Int>(name) { a, b -> calls++; compute(a, b) }
+    private fun fun1(name: String = "fun1", compute: (Int) -> Int = { it }) =
+            FunExpr<Int>(name) { calls++; compute(it) }
+
+    private fun fun2(name: String = "fun2", compute: (Int, Int) -> Int = { a, b -> a - b }) =
+            FunExpr<Int, Int>(name) { a, b -> calls++; compute(a, b) }
 
     private var calls = 0
     private val exprArity1 = fun1()

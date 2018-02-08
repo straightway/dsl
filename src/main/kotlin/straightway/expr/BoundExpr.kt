@@ -23,8 +23,7 @@ import straightway.error.Panic
  * The resulting expression takes the arguments of the bound expression and
  * the remaining arguments of the binding expression.
  */
-class BoundExpr(private val binding: Expr, private val bound: Expr) : Expr
-{
+class BoundExpr(private val binding: Expr, private val bound: Expr) : Expr {
     override fun invoke(vararg params: Any): Any {
         val boundFunParams = params.take(bound.arity).toTypedArray()
         val boundValue = bound(*boundFunParams)

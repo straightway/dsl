@@ -21,8 +21,8 @@ package straightway.expr
  */
 interface CombinableExpr : Expr
 
-operator fun <TState> CombinableExpr.minus(combinedWith: StateExpr<TState>)
-    = BoundExpr(this, combinedWith).inState<TState>()
+operator fun <TState> CombinableExpr.minus(combinedWith: StateExpr<TState>) =
+        BoundExpr(this, combinedWith).inState<TState>()
 
-operator fun CombinableExpr.minus(combinedWith: Expr)
-    = BoundExpr(this, combinedWith)
+operator fun CombinableExpr.minus(combinedWith: Expr) =
+        BoundExpr(this, combinedWith)

@@ -36,8 +36,9 @@ class StateExprTest {
         assertEquals(invokeParams, wrapped.lastInvokeArgs)
     }
 
-    @Test fun toString_yieldsWrappedToString()
-    = assertEquals("Hello", Value("Hello").inState<State>().toString())
+    @Test
+    fun toString_yieldsWrappedToString() =
+            assertEquals("Hello", Value("Hello").inState<State>().toString())
 
     private object State
 

@@ -55,16 +55,16 @@ class DistributedExprTest {
     }
 
     @Test fun toString_yieldsInfixNotations() =
-        assertEquals("big and odd", (big and odd).toString())
+            assertEquals("big and odd", (big and odd).toString())
 
     @Test fun toString_withThreeDistributedExpression_yieldsSuffixNotations() =
             assertEquals("big and odd and notTooBig", (big and odd and notTooBig).toString())
 
     @Test fun useCase_logicalAnd() {
-        assertFalse(((big and odd)-1)() as Boolean)
-        assertFalse(((big and odd)-2)() as Boolean)
-        assertFalse(((big and odd)-12)() as Boolean)
-        assertTrue(((big and odd)-13)() as Boolean)
+        assertFalse(((big and odd) - 1)() as Boolean)
+        assertFalse(((big and odd) - 2)() as Boolean)
+        assertFalse(((big and odd) - 12)() as Boolean)
+        assertTrue(((big and odd) - 13)() as Boolean)
     }
 }
 
@@ -73,7 +73,7 @@ private operator fun Any.minus(e: Expr) = BoundExpr(e, Value(this))
 private operator fun Expr.minus(v: Any) = BoundExpr(this, Value(v))
 
 private infix fun Expr.and(other: Expr) =
-    DistributedExpr("and", this, other) { args -> left(*args) as Boolean && right(*args) as Boolean }
+        DistributedExpr("and", this, other) { args -> left(*args) as Boolean && right(*args) as Boolean }
 private val odd = FunExpr("odd", untyped<Int, Boolean> { a -> a % 2 != 0 })
 private val big = FunExpr("big", untyped<Int, Boolean> { a -> a > 10 })
 private val notTooBig = FunExpr("notTooBig", untyped<Int, Boolean> { a -> 100 < a })

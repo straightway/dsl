@@ -35,24 +35,34 @@ class FunExprTest {
     fun `functor with too many arguments panics`() {
         assertThrows<Panic>(Panic::class.java) { sut(1, 2) }
     }
-    @Test fun construction_withPrimaryConstructor()
-        = testConstructionFromFunction(FunExpr(1, "name") { testFunctor(it[0]) }, 2, 2)
-    @Test fun construction_fromFunction0()
-        = testConstructionFromFunction(DerivedFun0("name", { testFunctor(83) }), 83)
-    @Test fun construction_fromTypedFunction0()
-        = testConstructionFromFunction(DerivedFun0("name", { testFunctor(83) as Int }), 83)
 
     @Test
-    fun construction_fromUntypedFunction1()
-        = testConstructionFromFunction(DerivedFun1("name") { a: Any -> testFunctor(a) }, 2, 2)
-    @Test fun construction_fromTypedFunction1()
-        = testConstructionFromTypedFunction(FunExpr("name") { a: Int -> testFunctor(a) }, 2, 2)
-    @Test fun construction_fromTypedFunction2()
-        = testConstructionFromTypedFunction(FunExpr("name") { a: Int, _: Int -> testFunctor(a + 2) }, 3, 1, 2)
+    fun construction_withPrimaryConstructor() =
+            testConstructionFromFunction(FunExpr(1, "name") { testFunctor(it[0]) }, 2, 2)
 
     @Test
-    fun construction_fromUntypedFunction2()
-        = testConstructionFromFunction(DerivedFun2("name") { a: Any, _: Any -> testFunctor(a as Int + 2) }, 3, 1, 2)
+    fun construction_fromFunction0() =
+            testConstructionFromFunction(DerivedFun0("name", { testFunctor(83) }), 83)
+
+    @Test
+    fun construction_fromTypedFunction0() =
+            testConstructionFromFunction(DerivedFun0("name", { testFunctor(83) as Int }), 83)
+
+    @Test
+    fun construction_fromUntypedFunction1() =
+            testConstructionFromFunction(DerivedFun1("name") { a: Any -> testFunctor(a) }, 2, 2)
+
+    @Test
+    fun construction_fromTypedFunction1() =
+            testConstructionFromTypedFunction(FunExpr("name") { a: Int -> testFunctor(a) }, 2, 2)
+
+    @Test
+    fun construction_fromTypedFunction2() =
+            testConstructionFromTypedFunction(FunExpr("name") { a: Int, _: Int -> testFunctor(a + 2) }, 3, 1, 2)
+
+    @Test
+    fun construction_fromUntypedFunction2() =
+            testConstructionFromFunction(DerivedFun2("name") { a: Any, _: Any -> testFunctor(a as Int + 2) }, 3, 1, 2)
 
     @Test
     fun `construction with arity less than 0 panics`() {
@@ -68,8 +78,7 @@ class FunExprTest {
     private fun testConstructionFromTypedFunction(toTest: FunExpr, expectedResult: Any, vararg invokeParams: Any) {
         testConstructionFromFunction(toTest, expectedResult, *invokeParams)
         for (paramIndex in invokeParams.indices) {
-            assertThrows<ClassCastException>(ClassCastException::class.java)
-            {
+            assertThrows<ClassCastException>(ClassCastException::class.java) {
                 testInvoke(*(Array(invokeParams.size) {
                     if (it == paramIndex) invokeParams[it].toString() else invokeParams[paramIndex]
                 }))
@@ -84,14 +93,14 @@ class FunExprTest {
         assertEquals(expectedResult, testInvoke(*invokeParams))
     }
 
-    private fun testInvoke(vararg params: Any) : Any {
+    private fun testInvoke(vararg params: Any): Any {
         calls = 0
         val result = sut(*params)
         assertEquals(1, calls, "Invalid number of functor calls")
         return result
     }
 
-    private fun testFunctor(result: Any) : Any {
+    private fun testFunctor(result: Any): Any {
         calls++
         return result
     }

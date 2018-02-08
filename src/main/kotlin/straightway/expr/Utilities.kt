@@ -17,14 +17,14 @@
 
 package straightway.expr
 
-fun <TArg, TResult> untyped(typed: (TArg) -> TResult): (Any) -> Any
-    = { typed(it as TArg) as Any }
+fun <TArg, TResult> untyped(typed: (TArg) -> TResult): (Any) -> Any =
+        { typed(it as TArg) as Any }
 
-fun <T> untypedOp(typed: (T) -> T): (Any) -> Any
-    = { typed(it as T) as Any }
+fun <T> untypedOp(typed: (T) -> T): (Any) -> Any =
+        { typed(it as T) as Any }
 
-fun <TArg1, TArg2, TResult> untyped(typed: (TArg1, TArg2) -> TResult): (Any, Any) -> Any
-    = { a, b -> typed(a as TArg1, b as TArg2) as Any }
+fun <TArg1, TArg2, TResult> untyped(typed: (TArg1, TArg2) -> TResult): (Any, Any) -> Any =
+        { a, b -> typed(a as TArg1, b as TArg2) as Any }
 
-fun <T> untypedOp(typed: (T, T) -> T): (Any, Any) -> Any
-    = { a, b -> typed(a as T, b as T) as Any }
+fun <T> untypedOp(typed: (T, T) -> T): (Any, Any) -> Any =
+        { a, b -> typed(a as T, b as T) as Any }

@@ -34,8 +34,8 @@ class ValueTest {
         assertThrows<Panic>(Panic::class.java) { sut(1) }
     }
 
-    @Test fun toString_returnsWrappedValueStringRepresentation()
-    {
+    @Test
+    fun toString_returnsWrappedValueStringRepresentation() {
         val sut = Value(83)
         assertEquals("83", sut.toString())
     }

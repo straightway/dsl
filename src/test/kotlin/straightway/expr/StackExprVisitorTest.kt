@@ -29,7 +29,7 @@ class StackExprVisitorTest {
     @Test
     fun visitedExpression_pushedToStack() {
         val sut = StackExprVisitor()
-        val visitedExpressions = listOf(Value(83), FunExpr<Int>("op") {-it })
+        val visitedExpressions = listOf(Value(83), FunExpr<Int>("op") { -it })
         for (e in visitedExpressions) sut.visit(e)
         assertEquals(visitedExpressions, sut.stack)
     }

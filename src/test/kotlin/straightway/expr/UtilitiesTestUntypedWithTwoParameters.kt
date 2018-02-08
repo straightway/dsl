@@ -22,7 +22,7 @@ class UtilitiesTestUntypedWithTwoParameters {
 
     @Test
     fun returnsLambdaWithAnyParametersAndReturnType() {
-        val result = untyped({ i: Int, d: Double -> i * d})
+        val result = untyped({ i: Int, d: Double -> i * d })
         @Suppress("USELESS_IS_CHECK")
         Assertions.assertTrue(result is (Any, Any) -> Any)
     }
@@ -31,7 +31,7 @@ class UtilitiesTestUntypedWithTwoParameters {
     fun returnedLambdaExecutesTypedParameterLambda() {
         val input1: Any = 3
         val input2: Any = Math.PI
-        val result = untyped({ i: Int, d: Double -> i * d})
+        val result = untyped({ i: Int, d: Double -> i * d })
         val output = result(input1, input2)
         Assertions.assertEquals(3 * Math.PI, output)
     }

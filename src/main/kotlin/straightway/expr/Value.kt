@@ -26,8 +26,7 @@ open class Value(private val value: Any) : Expr {
     override fun invoke(vararg params: Any) =
             if (params.any())
                 throw Panic("Value cannot take parameters on invocation, got: ${params.joinToString()}")
-            else
-                value
+            else value
 
     override fun toString() = when (value) {
         is Array<*> -> value.asList().toString()
