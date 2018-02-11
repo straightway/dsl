@@ -124,8 +124,9 @@ class BoundExprTest {
     }
 
     @Test
-    fun toString_yieldsExpectedResult() =
-            assertEquals("fun2-fun1-3-2", (BoundExpr(BoundExpr(BoundExpr(exprArity2, exprArity1), Value(3)), Value(2))).toString())
+    fun toString_yieldsExpectedResult() = assertEquals(
+            "fun2-fun1-3-2",
+            (BoundExpr(BoundExpr(BoundExpr(exprArity2, exprArity1), Value(3)), Value(2))).toString())
 
     private fun fun1(name: String = "fun1", compute: (Int) -> Int = { it }) =
             FunExpr<Int>(name) { calls++; compute(it) }
