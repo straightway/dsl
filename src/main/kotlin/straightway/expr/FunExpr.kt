@@ -21,15 +21,22 @@ import straightway.error.Panic
 /**
  * An expression who's value is computed by a given functor.
  */
-open class FunExpr(final override val arity: Int, val name: String, private val functor: (Array<out Any>) -> Any)
+open class FunExpr(
+        final override val arity: Int,
+        val name: String,
+        private val functor: (Array<out Any>) -> Any)
     : Expr {
 
-    constructor(name: String, functor: () -> Any) : this(0, name, { _ -> functor() })
-    constructor(name: String, functor: (Any) -> Any) : this(1, name, { args -> functor(args[0]) })
-    constructor(name: String, functor: (Any, Any) -> Any) : this(2, name, { args -> functor(args[0], args[1]) })
+    constructor(name: String, functor: () -> Any) :
+            this(0, name, { _ -> functor() })
+    constructor(name: String, functor: (Any) -> Any) :
+            this(1, name, { args -> functor(args[0]) })
+    constructor(name: String, functor: (Any, Any) -> Any) :
+            this(2, name, { args -> functor(args[0], args[1]) })
 
     override operator fun invoke(vararg params: Any): Any {
-        if (params.size != arity) throw Panic("Invalid number of parameters. Expected: $arity, got: ${params.size}")
+        if (params.size != arity)
+            throw Panic("Invalid number of parameters. Expected: $arity, got: ${params.size}")
         return functor(params)
     }
 
@@ -44,6 +51,7 @@ open class FunExpr(final override val arity: Int, val name: String, private val 
                 FunExpr(name, untyped(functor))
     }
     init {
-        if (arity < 0) throw Panic("Expressions must have non-negative arity (arity: $arity)")
+        if (arity < 0)
+            throw Panic("Expressions must have non-negative arity (arity: $arity)")
     }
 }

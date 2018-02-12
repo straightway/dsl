@@ -23,7 +23,10 @@ import straightway.error.Panic
 
 class BoundExprTest {
 
-    @BeforeEach fun setup() { calls = 0 }
+    @BeforeEach
+    fun setup() {
+        calls = 0
+    }
 
     @Test
     fun bindingValue_reducesArityByOne() =
@@ -58,7 +61,8 @@ class BoundExprTest {
         assertThrows<Panic>(Panic::class.java) { sut(1, 2) }
     }
 
-    @Test fun invoke_forBoundValue_yieldsCallResultOfHigherArityExpression() {
+    @Test
+    fun invoke_forBoundValue_yieldsCallResultOfHigherArityExpression() {
         var calls = 0
         val binding = FunExpr<Int>("fun") { calls++; -it }
         val bound = Value(3)
@@ -70,7 +74,8 @@ class BoundExprTest {
         assertEquals(1, calls)
     }
 
-    @Test fun invoke_forIndirectlyBoundValue_yieldsCallResultOfBothExpression() {
+    @Test
+    fun invoke_forIndirectlyBoundValue_yieldsCallResultOfBothExpression() {
         var calls = 0
         val binding = FunExpr<Int>("fun") { calls++; -it }
         val bound1 = FunExpr<Int>("bound") { calls++; it * 2 }
@@ -83,7 +88,8 @@ class BoundExprTest {
         assertEquals(2, calls)
     }
 
-    @Test fun invoke_distributesParameters() {
+    @Test
+    fun invoke_distributesParameters() {
         var calls = 0
         val binding = FunExpr<Int, Int>("fun") { a, b -> calls++; a - b }
         val bound1 = FunExpr<Int>("bound") { calls++; it * 2 }
@@ -95,7 +101,8 @@ class BoundExprTest {
         assertEquals(2, calls)
     }
 
-    @Test fun accept_traversesBoundFirst() {
+    @Test
+    fun accept_traversesBoundFirst() {
         val bound = Value(2)
         val sut = BoundExpr(exprArity1, bound)
         val visitor = StackExprVisitor()
@@ -103,7 +110,8 @@ class BoundExprTest {
         assertEquals(listOf(exprArity1, bound), visitor.stack)
     }
 
-    @Test fun accept_visitsBoundExpressionDepthFirst() {
+    @Test
+    fun accept_visitsBoundExpressionDepthFirst() {
         val sub1 = FunExpr<Int, Int>("Sub1") { a, _ -> a }
         val sub1sub1 = Value("Sub1Sub1")
         val sub1sub2 = Value("Sub1Sub2")
@@ -126,7 +134,8 @@ class BoundExprTest {
     @Test
     fun toString_yieldsExpectedResult() = assertEquals(
             "fun2-fun1-3-2",
-            (BoundExpr(BoundExpr(BoundExpr(exprArity2, exprArity1), Value(3)), Value(2))).toString())
+            (BoundExpr(BoundExpr(BoundExpr(exprArity2, exprArity1), Value(3)), Value(2)))
+                    .toString())
 
     private fun fun1(name: String = "fun1", compute: (Int) -> Int = { it }) =
             FunExpr<Int>(name) { calls++; compute(it) }

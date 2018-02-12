@@ -24,43 +24,52 @@ import straightway.error.Panic
 
 class DistributedExprTest {
 
-    @Test fun arity() {
+    @Test
+    fun arity() {
         val sut = DistributedExpr("collector", odd, big) { _ -> 83 }
         assertEquals(1, sut.arity)
     }
 
-    @Test fun callsFunctor() {
+    @Test
+    fun callsFunctor() {
         val sut = DistributedExpr("collector", odd, big) { _ -> 83 } - 1
         assertEquals(83, sut())
     }
 
-    @Test fun construction_withDifferentArityLeftAndRight_throws() =
+    @Test
+    fun construction_withDifferentArityLeftAndRight_throws() =
             assertThrows<Panic>(Panic::class.java) {
                 DistributedExpr("invalid", Value("arity0"), odd) { _ -> 83 }
             }!!
 
-    @Test fun hasAccessToDistributionTargets() {
+    @Test
+    fun hasAccessToDistributionTargets() {
         val sut = DistributedExpr("collector", odd, big) { _ ->
             assertEquals(odd, left)
             assertEquals(big, right)
-            83 }
+            83
+        }
         assertEquals(83, sut())
     }
 
-    @Test fun accept_doesNotDescend() {
+    @Test
+    fun accept_doesNotDescend() {
         val sut = big and odd
         val visitor = StackExprVisitor()
         sut.accept { visitor.visit(it) }
         assertEquals(listOf(sut), visitor.stack)
     }
 
-    @Test fun toString_yieldsInfixNotations() =
+    @Test
+    fun toString_yieldsInfixNotations() =
             assertEquals("big and odd", (big and odd).toString())
 
-    @Test fun toString_withThreeDistributedExpression_yieldsSuffixNotations() =
+    @Test
+    fun toString_withThreeDistributedExpression_yieldsSuffixNotations() =
             assertEquals("big and odd and notTooBig", (big and odd and notTooBig).toString())
 
-    @Test fun useCase_logicalAnd() {
+    @Test
+    fun useCase_logicalAnd() {
         assertFalse(((big and odd) - 1)() as Boolean)
         assertFalse(((big and odd) - 2)() as Boolean)
         assertFalse(((big and odd) - 12)() as Boolean)
@@ -73,7 +82,8 @@ private operator fun Any.minus(e: Expr) = BoundExpr(e, Value(this))
 private operator fun Expr.minus(v: Any) = BoundExpr(this, Value(v))
 
 private infix fun Expr.and(other: Expr) =
-        DistributedExpr("and", this, other) { args -> left(*args) as Boolean && right(*args) as Boolean }
+        DistributedExpr("and", this, other) { left(*it) as Boolean && right(*it) as Boolean }
+
 private val odd = FunExpr("odd", untyped<Int, Boolean> { a -> a % 2 != 0 })
 private val big = FunExpr("big", untyped<Int, Boolean> { a -> a > 10 })
 private val notTooBig = FunExpr("notTooBig", untyped<Int, Boolean> { a -> 100 < a })

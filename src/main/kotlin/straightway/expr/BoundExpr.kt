@@ -41,6 +41,7 @@ class BoundExpr(private val binding: Expr, private val bound: Expr) : Expr {
     override fun toString() = "$binding-$bound"
 
     init {
-        if (binding.arity < 1) throw Panic("Binding expression must have parameters (arity: $arity)")
+        if (binding.arity < 1)
+            throw Panic("Binding expression must have parameters (arity: $arity)")
     }
 }

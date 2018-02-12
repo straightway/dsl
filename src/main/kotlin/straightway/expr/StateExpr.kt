@@ -24,6 +24,8 @@ interface StateExpr<TState> : Expr
 
 fun <T> Expr.inState(): StateExpr<T> = StateExprImpl(this)
 
-private class StateExprImpl<TState>(private val wrapped: Expr) : StateExpr<TState>, Expr by wrapped {
+private class StateExprImpl<TState>(private val wrapped: Expr) :
+        StateExpr<TState>, Expr by wrapped {
+
     override fun toString() = wrapped.toString()
 }

@@ -25,7 +25,8 @@ open class Value(private val value: Any) : Expr {
 
     override fun invoke(vararg params: Any) =
             if (params.any())
-                throw Panic("Value cannot take parameters on invocation, got: ${params.joinToString()}")
+                throw Panic(
+                        "Value cannot take parameters on invocation, got: ${params.joinToString()}")
             else value
 
     override fun toString() = when (value) {
