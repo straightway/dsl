@@ -45,39 +45,50 @@ class FunExprTest {
 
     @Test
     fun construction_withPrimaryConstructor() =
-            testConstructionFromFunction(FunExpr(1, "name") { testFunctor(it[0]) }, 2, 2)
+            ConstructionTest(FunExpr(1, "name") { testFunctor(it[0]) })
+                    .withParameters(2)
+                    .expecting(2)
+                    .testFromFunction()
 
     @Test
     fun construction_fromFunction0() =
-            testConstructionFromFunction(DerivedFun0("name", { testFunctor(83) }), 83)
+            ConstructionTest(DerivedFun0("name") { testFunctor(83) })
+                    .expecting(83)
+                    .testFromFunction()
 
     @Test
     fun construction_fromTypedFunction0() =
-            testConstructionFromFunction(DerivedFun0("name", { testFunctor(83) as Int }), 83)
+            ConstructionTest(DerivedFun0("name") { testFunctor(83) as Int })
+                    .expecting(83)
+                    .testFromFunction()
 
     @Test
     fun construction_fromUntypedFunction1() =
-            testConstructionFromFunction(DerivedFun1("name") { a: Any -> testFunctor(a) }, 2, 2)
+            ConstructionTest(DerivedFun1("name") { a: Any -> testFunctor(a) })
+                    .withParameters(2)
+                    .expecting(2)
+                    .testFromFunction()
 
     @Test
     fun construction_fromTypedFunction1() =
-            testConstructionFromTypedFunction(FunExpr("name") { a: Int -> testFunctor(a) }, 2, 2)
+            ConstructionTest(FunExpr("name") { a: Int -> testFunctor(a) })
+                    .withParameters(2)
+                    .expecting(2)
+                    .testFromTypedFunction()
 
     @Test
     fun construction_fromTypedFunction2() =
-            testConstructionFromTypedFunction(
-                    FunExpr("name") { a: Int, _: Int -> testFunctor(a + 2) },
-                    3,
-                    1,
-                    2)
+            ConstructionTest(FunExpr("name") { a: Int, _: Int -> testFunctor(a + 2) })
+                    .withParameters(1, 2)
+                    .expecting(3)
+                    .testFromTypedFunction()
 
     @Test
     fun construction_fromUntypedFunction2() =
-            testConstructionFromFunction(
-                    DerivedFun2("name") { a: Any, _: Any -> testFunctor(a as Int + 2) },
-                    3,
-                    1,
-                    2)
+            ConstructionTest(DerivedFun2("name") { a: Any, _: Any -> testFunctor(a as Int + 2) })
+                    .withParameters(1, 2)
+                    .expecting(3)
+                    .testFromFunction()
 
     @Test
     fun `construction with arity less than 0 panics`() {
@@ -91,29 +102,39 @@ class FunExprTest {
     private class DerivedFun1(name: String, functor: (Any) -> Any) : FunExpr(name, functor)
     private class DerivedFun2(name: String, functor: (Any, Any) -> Any) : FunExpr(name, functor)
 
-    private fun testConstructionFromTypedFunction(
-            toTest: FunExpr,
-            expectedResult: Any,
-            vararg invokeParams: Any) {
+    private inner class ConstructionTest(val toTest: FunExpr) {
 
-        testConstructionFromFunction(toTest, expectedResult, *invokeParams)
-        for (paramIndex in invokeParams.indices) {
-            assertThrows<ClassCastException>(ClassCastException::class.java) {
-                testInvoke(*(Array(invokeParams.size) {
-                    if (it == paramIndex) invokeParams[it].toString() else invokeParams[paramIndex]
-                }))
+        fun expecting(result: Any): ConstructionTest {
+            expectedResult = result
+            return this
+        }
+
+        fun withParameters(vararg params: Any): ConstructionTest {
+            invokeParams = params
+            return this
+        }
+
+        fun testFromTypedFunction() {
+            testFromFunction()
+            for (paramIndex in invokeParams.indices) {
+                assertThrows<ClassCastException>(ClassCastException::class.java) {
+                    testInvoke(*(Array(invokeParams.size) {
+                        if (it == paramIndex) invokeParams[it].toString()
+                        else invokeParams[paramIndex]
+                    }))
+                }
             }
         }
-    }
 
-    private fun testConstructionFromFunction(
-            toTest: FunExpr,
-            expectedResult: Any,
-            vararg invokeParams: Any) {
-        sut = toTest
-        assertEquals(invokeParams.size, sut.arity)
-        assertEquals("name", sut.name)
-        assertEquals(expectedResult, testInvoke(*invokeParams))
+        fun testFromFunction() {
+            sut = toTest
+            assertEquals(invokeParams.size, sut.arity)
+            assertEquals("name", sut.name)
+            assertEquals(expectedResult, testInvoke(*invokeParams))
+        }
+
+        private var invokeParams: Array<out Any> = arrayOf()
+        private var expectedResult = Any()
     }
 
     private fun testInvoke(vararg params: Any): Any {
