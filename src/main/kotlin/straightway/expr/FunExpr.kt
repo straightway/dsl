@@ -24,13 +24,15 @@ import straightway.error.Panic
 open class FunExpr(
         final override val arity: Int,
         val name: String,
-        private val functor: (Array<out Any>) -> Any)
-    : Expr {
+        private val functor: (Array<out Any>) -> Any
+) : Expr {
 
     constructor(name: String, functor: () -> Any) :
             this(0, name, { _ -> functor() })
+
     constructor(name: String, functor: (Any) -> Any) :
             this(1, name, { args -> functor(args[0]) })
+
     constructor(name: String, functor: (Any, Any) -> Any) :
             this(2, name, { args -> functor(args[0], args[1]) })
 
@@ -50,6 +52,7 @@ open class FunExpr(
                 invoke(name: String, noinline functor: (TArg1, TArg2) -> Any) =
                 FunExpr(name, untyped(functor))
     }
+
     init {
         if (arity < 0)
             throw Panic("Expressions must have non-negative arity (arity: $arity)")

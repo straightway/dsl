@@ -23,7 +23,8 @@ import straightway.error.Panic
 
 class ValueTest {
 
-    @Test fun invocation_returnsValue() {
+    @Test
+    fun invocation_returnsValue() {
         val sut = Value(TestValue)
         assertSame(TestValue, sut())
     }
@@ -40,32 +41,38 @@ class ValueTest {
         assertEquals("83", sut.toString())
     }
 
-    @Test fun toString_returnsArrayElements() {
+    @Test
+    fun toString_returnsArrayElements() {
         val sut = Value(arrayOf(1, 2, 3))
         assertEquals("[1, 2, 3]", sut.toString())
     }
 
-    @Test fun toString_returnsPlainString() {
+    @Test
+    fun toString_returnsPlainString() {
         val sut = Value("123")
         assertEquals("123", sut.toString())
     }
 
-    @Test fun toString_returnsSequenceElements() {
+    @Test
+    fun toString_returnsSequenceElements() {
         val sut = Value("123".asSequence())
         assertEquals("[1, 2, 3]", sut.toString())
     }
 
-    @Test fun toString_returnsCharSequenceElements() {
+    @Test
+    fun toString_returnsCharSequenceElements() {
         val sut = Value(sequenceOf('1', '2', '3'))
         assertEquals("[1, 2, 3]", sut.toString())
     }
 
-    @Test fun hasArity0() {
+    @Test
+    fun hasArity0() {
         val sut = Value(83)
         assertEquals(0, sut.arity)
     }
 
-    @Test fun isDirectlyVisited() {
+    @Test
+    fun isDirectlyVisited() {
         val sut = Value(83)
         val visitor = StackExprVisitor()
         sut.accept { visitor.visit(it) }

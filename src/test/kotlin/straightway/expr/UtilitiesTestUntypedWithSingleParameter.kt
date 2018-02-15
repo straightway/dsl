@@ -21,13 +21,15 @@ import org.junit.jupiter.api.Test
 
 class UtilitiesTestUntypedWithSingleParameter {
 
-    @Test fun returnsLambdaWithAnyParametersAndReturnType() {
+    @Test
+    fun returnsLambdaWithAnyParametersAndReturnType() {
         val result = untyped({ i: Int -> i * 3 })
         @Suppress("USELESS_IS_CHECK")
         assertTrue(result is (Any) -> Any)
     }
 
-    @Test fun returnedLambdaExecutesTypedParameterLambda() {
+    @Test
+    fun returnedLambdaExecutesTypedParameterLambda() {
         val input: Any = 3
         val result = untyped({ i: Int -> i * 3 })
         val output = result(input)

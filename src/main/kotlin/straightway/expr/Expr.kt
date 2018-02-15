@@ -21,6 +21,9 @@ package straightway.expr
  */
 interface Expr {
     val arity: Int
-    fun accept(visitor: (Expr) -> Unit) { visitor(this) }
+    fun accept(visitor: (Expr) -> Unit) {
+        visitor(this)
+    }
+
     operator fun invoke(vararg params: Any): Any
 }

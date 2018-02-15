@@ -26,7 +26,8 @@ class DistributedExpr(
         private val name: String,
         val left: Expr,
         val right: Expr,
-        private val functor: DistributedExpr.(Array<out Any>) -> Any) : Expr {
+        private val functor: DistributedExpr.(Array<out Any>) -> Any
+) : Expr {
     override val arity: Int get() = left.arity
     override fun invoke(vararg params: Any): Any = functor(params)
     override fun toString() = "$left $name $right"
@@ -35,6 +36,6 @@ class DistributedExpr(
         if (left.arity != right.arity)
             throw Panic(
                     "Different arity for left (${left.arity}) and " +
-                    "right (${right.arity}) distributed expression")
+                            "right (${right.arity}) distributed expression")
     }
 }

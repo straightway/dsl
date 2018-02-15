@@ -20,14 +20,16 @@ import org.junit.jupiter.api.Test
 
 class StateExprTest {
 
-    @Test fun delegates_arity() {
+    @Test
+    fun delegates_arity() {
         val wrapped = ExprMock()
         val sut: Expr = wrapped.inState<State>()
         assertEquals(2, sut.arity)
         assertEquals(1, wrapped.arityCalls)
     }
 
-    @Test fun delegates_invoke() {
+    @Test
+    fun delegates_invoke() {
         val wrapped = ExprMock()
         val sut: Expr = wrapped.inState<State>()
         val invokeParams = listOf(5, 7)
@@ -44,7 +46,10 @@ class StateExprTest {
 
     private class ExprMock : Expr {
         var arityCalls = 0
-        override val arity: Int get() { arityCalls++; return 2 }
+        override val arity: Int
+            get() {
+                arityCalls++; return 2
+            }
 
         var invokeCalls = 0
         var lastInvokeArgs = listOf<Any>()

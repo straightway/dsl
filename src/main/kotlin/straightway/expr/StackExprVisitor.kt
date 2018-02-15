@@ -20,7 +20,9 @@ package straightway.expr
  */
 class StackExprVisitor {
     val stack: List<Expr> get() = _stack
-    fun visit(e: Expr) { _stack.add(e) }
+    fun visit(e: Expr) {
+        _stack.add(e)
+    }
 
     private val _stack = mutableListOf<Expr>()
 }

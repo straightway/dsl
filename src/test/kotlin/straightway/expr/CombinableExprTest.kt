@@ -21,13 +21,15 @@ import org.junit.jupiter.api.Test
 
 class CombinableExprTest {
 
-    @Test fun combinedExpressionKeepsState() {
+    @Test
+    fun combinedExpressionKeepsState() {
         val result = TestExpr - TestExpr.inState<Int>()
         @Suppress("USELESS_IS_CHECK")
         assertTrue(result is StateExpr<Int>)
     }
 
-    @Test fun combineStatelessExpressions() {
+    @Test
+    fun combineStatelessExpressions() {
         val result = TestExpr - TestExpr
         assertEquals(1, result(1))
     }
