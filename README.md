@@ -1,2 +1,2 @@
-# dsl
-Generic support for domain specific languages with flow syntax.
+# expr
+Support for partially bound functional expressions.
