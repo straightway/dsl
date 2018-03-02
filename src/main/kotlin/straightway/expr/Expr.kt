@@ -25,5 +25,5 @@ interface Expr {
         visitor(this)
     }
 
-    operator fun invoke(vararg params: Any): Any
+    operator fun invoke(vararg params: Any?): Any?
 }

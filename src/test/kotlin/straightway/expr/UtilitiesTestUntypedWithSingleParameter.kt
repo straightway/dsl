@@ -25,7 +25,7 @@ class UtilitiesTestUntypedWithSingleParameter {
     fun returnsLambdaWithAnyParametersAndReturnType() {
         val result = untyped({ i: Int -> i * 3 })
         @Suppress("USELESS_IS_CHECK")
-        assertTrue(result is (Any) -> Any)
+        assertTrue(result is (Any?) -> Any?)
     }
 
     @Test

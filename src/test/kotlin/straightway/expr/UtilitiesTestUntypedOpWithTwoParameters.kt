@@ -24,7 +24,7 @@ class UtilitiesTestUntypedOpWithTwoParameters {
     fun returnsLambdaWithAnyParametersAndReturnType() {
         val result = untypedOp({ i: Int, d: Int -> i * d })
         @Suppress("USELESS_IS_CHECK")
-        Assertions.assertTrue(result is (Any, Any) -> Any)
+        Assertions.assertTrue(result is (Any?, Any?) -> Any?)
     }
 
     @Test

@@ -52,8 +52,8 @@ class StateExprTest {
             }
 
         var invokeCalls = 0
-        var lastInvokeArgs = listOf<Any>()
-        override fun invoke(vararg params: Any): Any {
+        var lastInvokeArgs = listOf<Any?>()
+        override fun invoke(vararg params: Any?): Any? {
             invokeCalls++
             lastInvokeArgs = params.toList()
             return 83

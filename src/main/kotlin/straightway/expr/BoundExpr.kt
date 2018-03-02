@@ -25,7 +25,7 @@ import straightway.error.Panic
  */
 class BoundExpr(private val binding: Expr, private val bound: Expr) : Expr {
 
-    override fun invoke(vararg params: Any): Any {
+    override fun invoke(vararg params: Any?): Any? {
         val boundValue = getBoundValue(params)
         val bindingFunParams = (listOf(boundValue) + params.drop(bound.arity)).toTypedArray()
         return binding(*bindingFunParams)
@@ -39,7 +39,7 @@ class BoundExpr(private val binding: Expr, private val bound: Expr) : Expr {
 
     override fun toString() = "$binding-$bound"
 
-    private fun getBoundValue(params: Array<out Any>): Any {
+    private fun getBoundValue(params: Array<out Any?>): Any? {
         val boundFunParams = params.take(bound.arity).toTypedArray()
         return bound(*boundFunParams)
     }

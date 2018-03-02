@@ -64,7 +64,7 @@ class FunExprTest {
 
     @Test
     fun construction_fromUntypedFunction1() =
-            ConstructionTest(DerivedFun1("name") { a: Any -> testFunctor(a) })
+            ConstructionTest(DerivedFun1("name") { a: Any? -> testFunctor(a) })
                     .withParameters(2)
                     .expecting(2)
                     .testFromFunction()
@@ -85,7 +85,7 @@ class FunExprTest {
 
     @Test
     fun construction_fromUntypedFunction2() =
-            ConstructionTest(DerivedFun2("name") { a: Any, _: Any -> testFunctor(a as Int + 2) })
+            ConstructionTest(DerivedFun2("name") { a: Any?, _: Any? -> testFunctor(a as Int + 2) })
                     .withParameters(1, 2)
                     .expecting(3)
                     .testFromFunction()
@@ -98,9 +98,9 @@ class FunExprTest {
     @Test
     fun toString_yieldsName() = assertEquals(sut.name, sut.toString())
 
-    private class DerivedFun0(name: String, functor: () -> Any) : FunExpr(name, functor)
-    private class DerivedFun1(name: String, functor: (Any) -> Any) : FunExpr(name, functor)
-    private class DerivedFun2(name: String, functor: (Any, Any) -> Any) : FunExpr(name, functor)
+    private class DerivedFun0(name: String, functor: () -> Any?) : FunExpr(name, functor)
+    private class DerivedFun1(name: String, functor: (Any?) -> Any?) : FunExpr(name, functor)
+    private class DerivedFun2(name: String, functor: (Any?, Any?) -> Any?) : FunExpr(name, functor)
 
     private inner class ConstructionTest(val toTest: FunExpr) {
 
@@ -137,14 +137,14 @@ class FunExprTest {
         private var expectedResult = Any()
     }
 
-    private fun testInvoke(vararg params: Any): Any {
+    private fun testInvoke(vararg params: Any?): Any? {
         calls = 0
         val result = sut(*params)
         assertEquals(1, calls, "Invalid number of functor calls")
         return result
     }
 
-    private fun testFunctor(result: Any): Any {
+    private fun testFunctor(result: Any?): Any? {
         calls++
         return result
     }

@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test
 class ExprTest {
 
     private class TestExpr(override val arity: Int) : Expr {
-        override fun invoke(vararg params: Any) = fail<Unit>("Not implemented")!!
+        override fun invoke(vararg params: Any?) = fail<Unit>("Not implemented")!!
     }
 
     @Test

@@ -26,10 +26,10 @@ class DistributedExpr(
         private val name: String,
         val left: Expr,
         val right: Expr,
-        private val functor: DistributedExpr.(Array<out Any>) -> Any
+        private val functor: DistributedExpr.(Array<out Any?>) -> Any?
 ) : Expr {
     override val arity: Int get() = left.arity
-    override fun invoke(vararg params: Any): Any = functor(params)
+    override fun invoke(vararg params: Any?): Any? = functor(params)
     override fun toString() = "$left $name $right"
 
     init {
