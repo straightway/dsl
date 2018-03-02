@@ -48,8 +48,8 @@ open class FunExpr(
         inline operator fun <reified TArg> invoke(name: String, noinline functor: (TArg) -> Any) =
                 FunExpr(name, untyped(functor))
 
-        inline operator fun <reified TArg1, reified TArg2>
-                invoke(name: String, noinline functor: (TArg1, TArg2) -> Any) =
+        inline operator fun <reified TArg1, reified TArg2> invoke(
+                name: String, noinline functor: (TArg1, TArg2) -> Any) =
                 FunExpr(name, untyped(functor))
     }
 

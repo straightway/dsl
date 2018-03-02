@@ -34,5 +34,30 @@ class CombinableExprTest {
         assertEquals(1, result(1))
     }
 
+    @Test
+    fun `make expression combinable`() {
+        val add = FunExpr("+") { a: Int, b: Int -> a + b }.combinable
+        val increment = add - Value(1)
+        assertEquals(3, increment(2))
+    }
+
+    @Test
+    fun `chained expression combinable`() {
+        val add = FunExpr("+") { a: Int, b: Int -> a + b }.combinable
+        assertEquals(5, (add - Value(3) - Value(2))())
+    }
+
+    @Test
+    fun `string representation of combined expression`() {
+        assertEquals("+", FunExpr("+") { a: Int, b: Int -> a + b }.combinable.toString())
+    }
+
+    @Test
+    fun `string representation of bound combined expression`() {
+        val add = FunExpr("+") { a: Int, b: Int -> a + b }.combinable
+        val bound = add - Value(3) - Value(5)
+        assertEquals("+-3-5", bound.toString())
+    }
+
     private object TestExpr : CombinableExpr, Expr by FunExpr("neg", untyped<Int, Int> { -it })
 }

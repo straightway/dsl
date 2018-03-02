@@ -25,4 +25,10 @@ operator fun <TState> CombinableExpr.minus(combinedWith: StateExpr<TState>) =
         BoundExpr(this, combinedWith).inState<TState>()
 
 operator fun CombinableExpr.minus(combinedWith: Expr) =
-        BoundExpr(this, combinedWith)
+        BoundExpr(this, combinedWith).combinable
+
+private class ConvertedCombinableExpr(private val expr: Expr) : Expr by expr, CombinableExpr {
+    override fun toString() = expr.toString()
+}
+
+val Expr.combinable: CombinableExpr get() = ConvertedCombinableExpr(this)
