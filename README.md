@@ -30,5 +30,5 @@ To include this library in a gradle build, add
 Then you can simply configure in your dependencies:
 
     dependencies {
-        compile "straightway:expr<version>"
+        compile "straightway:expr:<version>"
     }
